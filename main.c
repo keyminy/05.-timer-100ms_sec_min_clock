@@ -5,74 +5,58 @@
  * Author : HARMAN-27
  */ 
 
-#include <avr/io.h>
-
-#define F_CPU 16000000UL
-#include <util/delay.h>
 //interrupt 관련 함수
-#include <avr/interrupt.h>
+
 #include <stdbool.h>
 #include "extern.h"
 #include "def.h"
 #include "button.h"
+#include "fnd.h"
+#include <avr/interrupt.h>
 
 void init_timer0();
 
 //led를 가동해보자(전역변수 선언)
 // ISR안에 쓰는 변수는 변수 type앞에 volatile써야한다.
 // 이유는 최적화 방지를 위함이다.(내가 작성한 코드 일일이 수행하게 해줘)
-volatile uint32_t ms_count = 0; 
-volatile uint32_t sec_count = 0;
+volatile int ms_count = 0; 
+volatile int sec_count = 0;
+volatile int ms_flash = 0;
 
-
+bool state = false;
 
 // 256개의 pulse(=1ms)를 count하면 이곳으로 자동적으로 진입한다.
 // 즉, 256개의 pulse == 1ms
 ISR(TIMER0_OVF_vect){
+
 	/* 인터럽트 루틴을 가능한 짧게 짜라, ms_count만 증가시키고 빠져나오게함 */
 	TCNT0=6; // 6 ~ 256개의 pulse카운트 --> 1ms를 맞춰주기 위해서 TCNT0을 6으로 설정
 	ms_count++;
-	if(ms_count>=1000){
+	if(ms_count >= 1000){
 		ms_count = 0;
 		sec_count++;
+	}
+
+	// timer를체크하자, 1ms마다 뜬다고 했어
+	if(!state){
+		fnd_stop_display();
+		}else{
+		fnd_display();
 	}
 }
 
 
 int main(void)
 {
-	int job = 0; //동시 실행 문제
 	init_timer0();
 	init_fnd();
-	bool state = false;
 	
     while (1) 
     {
-		#if 1
-		// timer를체크하자, 1ms마다 뜬다고 했어
-		if(!state){
-			fnd_stop_display();
-			_delay_ms(1);
-		}else{
-			fnd_display();
-			_delay_ms(1);
-		}
-		
 		if(get_button(BUTTON1_PIN,BUTTON1)){
 			state = !state;
 		}
 		
-
-		#else //기존 delay적용 코드 방식
-			fnd_display();
-			_delay_ms(1); //1ms마다 fnd_display함수 호출
-			ms_count++;
-			if(ms_count >= 1000){
-				//1000ms = 1s
-				ms_count = 0;
-				sec_count++; // sec count를 증가시킴
-			}
-		#endif
     }
 }
 

@@ -7,10 +7,9 @@
 #ifndef EXTERN_H_
 #define EXTERN_H_
 
-extern volatile uint32_t min_count;
-extern volatile uint32_t sec_count;
-extern volatile uint32_t ms_count;
-
+extern volatile int ms_count;
+extern volatile int sec_count;
+extern volatile int ms_flash;
 
 
 #endif /* LED_H_ */

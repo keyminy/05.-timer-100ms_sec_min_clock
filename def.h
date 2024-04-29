@@ -9,8 +9,5 @@
 #ifndef DEF_H_
 #define DEF_H_
 
-#define INIT_FND 0
-#define BUTTON_PUSHED 1
-#define BUTTON_RESET 2
 
 #endif /* DEF_H_ */
