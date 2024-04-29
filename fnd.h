@@ -22,5 +22,7 @@ typedef enum stopwatch_state {
 
 void init_fnd(void);
 void fnd_display(void);
+void fnd_stop_display(void);
+int stop_logic(int digit_position);
 
 #endif 

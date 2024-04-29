@@ -9,11 +9,8 @@
 #ifndef DEF_H_
 #define DEF_H_
 
-#define LEFT2RIGHT 0
-#define RIGHT2LEFT 1
-#define FLOWER_ON 2
-#define FLOWER_OFF 3
-
-
+#define INIT_FND 0
+#define BUTTON_PUSHED 1
+#define BUTTON_RESET 2
 
 #endif /* DEF_H_ */
