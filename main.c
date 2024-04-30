@@ -32,6 +32,7 @@ ISR(TIMER0_OVF_vect){
 	/* 인터럽트 루틴을 가능한 짧게 짜라, ms_count만 증가시키고 빠져나오게함 */
 	TCNT0=6; // 6 ~ 256개의 pulse카운트 --> 1ms를 맞춰주기 위해서 TCNT0을 6으로 설정
 	ms_count++;
+	ms_flash++;
 	if(ms_count >= 1000){
 		ms_count = 0;
 		sec_count++;
